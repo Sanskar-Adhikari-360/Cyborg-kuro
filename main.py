@@ -4,17 +4,31 @@ import logging
 from dotenv import load_dotenv
 import os
 import json
+import subprocess
+from datetime import datetime
+
 
 data = {}
 
 load_dotenv()
+GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
 token = os.getenv('DISCORD_TOKEN')
 handler = logging.FileHandler(filename='discord.log', encoding='utf-8', mode='w')
 intents = discord.Intents.default()
 intents.message_content = True
 intents.members = True
 
+
 bot = commands.Bot(command_prefix='/',intents=intents)
+
+def git_push():
+    subprocess.run(["git", "add", "data.json"], check=True)
+    subprocess.run([
+        "git", "commit",
+        "-m", f"Update status ({datetime.now().isoformat()})"
+    ], check=True)
+    subprocess.run(["git", "push"], check=True)
+
 
 @bot.event
 async def on_ready():
@@ -98,6 +112,8 @@ async def commit(ctx):
     with open('data.json', 'w') as f:
         json.dump(data, f)
     await ctx.send("Changes have been committed successfully!")
+    git_push()
+    await ctx.send("Changes have been pushed to the GitHub repository successfully!")
 
 
 
