@@ -93,7 +93,11 @@ async def update(ctx):
 
 @bot.command()
 async def commit(ctx):
-    print(data)
+    await ctx.send("Committing the changes in the JSON...")
+    global data
+    with open('data.json', 'w') as f:
+        json.dump(data, f)
+    await ctx.send("Changes have been committed successfully!")
 
 
 
