@@ -50,6 +50,7 @@ async def updatebook(ctx,arg=None):
         await ctx.send("Please provide the name of the book to update.")
     else:
         await ctx.send(f"The currently reading book has been updated to: {arg}")
+    book = arg
 
 @bot.command()
 async def updateshow(ctx,arg=None):
@@ -57,6 +58,7 @@ async def updateshow(ctx,arg=None):
         await ctx.send("Please provide the name of the show to update.")
     else:
         await ctx.send(f"The currently watching show has been updated to: {arg}")
+    show = arg
 
 @bot.command()
 async def updatemood(ctx,arg=None):
@@ -64,6 +66,7 @@ async def updatemood(ctx,arg=None):
         await ctx.send("Please provide the mood you want to update to.")
     else:
         await ctx.send(f"Your cureent mood has been updated to {arg}.")
+    mood = arg
 
 
 @bot.command()
