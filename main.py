@@ -3,6 +3,9 @@ from discord.ext import commands
 import logging
 from dotenv import load_dotenv
 import os
+import json
+
+data = {}
 
 load_dotenv()
 token = os.getenv('DISCORD_TOKEN')
@@ -45,28 +48,34 @@ async def website(ctx):
                    " Do you need any assistance on it??")
 
 @bot.command()
-async def updatebook(ctx,arg=None):
+async def updatebook(ctx, *,arg=None):
+    global data
     if arg is None:
         await ctx.send("Please provide the name of the book to update.")
     else:
-        await ctx.send(f"The currently reading book has been updated to: {arg}")
+        await ctx.send(f"The currently reading book has been updated to: **{arg}**")
     book = arg
+    data["book"] = book
 
 @bot.command()
-async def updateshow(ctx,arg=None):
+async def updateshow(ctx, *,arg=None):
+    global data
     if arg is None:
         await ctx.send("Please provide the name of the show to update.")
     else:
-        await ctx.send(f"The currently watching show has been updated to: {arg}")
+        await ctx.send(f"The currently watching show has been updated to: **{arg}**")
     show = arg
+    data["show"] = show
 
 @bot.command()
-async def updatemood(ctx,arg=None):
+async def updatemood(ctx, *,arg=None):
+    global data
     if arg is None:
         await ctx.send("Please provide the mood you want to update to.")
     else:
-        await ctx.send(f"Your cureent mood has been updated to {arg}.")
+        await ctx.send(f"Your cureent mood has been updated to **{arg}**")
     mood = arg
+    data["mood"] = mood
 
 
 @bot.command()
@@ -82,6 +91,10 @@ async def update(ctx):
     "Use /task to view all the tasks",inline=False)
     await ctx.send(embed=embed)
 
+@bot.command()
+async def commit(ctx):
+    print(data)
+
 
 
 @bot.command()
@@ -95,3 +108,4 @@ async def helpme(ctx):
     await ctx.send(embed=embed)
     
 bot.run(token, log_handler=handler, log_level=logging.DEBUG)
+
