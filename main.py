@@ -83,6 +83,15 @@ async def update(ctx, subcommand, *, arg=None):
             return await update_task(ctx,subcommand,arg,"Please provide the mood you want to update to.","Your cureent mood has been updated to")
         case _:
             await ctx.send("Invalid command:<")
+
+@bot.command()
+async def list(ctx):
+    with open("data.json","r") as file:
+        data = json.load(file)
+    embed = discord.Embed(title="This is the cureent data list")
+    for key, value in data.items():
+        embed.add_field(name=key.capitalize(), value=value, inline=False)
+    await ctx.send(embed=embed)
         
 
 @bot.command()
